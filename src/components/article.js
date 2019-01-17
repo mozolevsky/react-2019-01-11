@@ -1,9 +1,9 @@
 import React, {PureComponent} from 'react'
+import Comments from '../components/comments'
 
 class Article extends PureComponent {
     render() {
         const {article: {title}, isOpen} = this.props
-        console.log('render Article');
         return (
             <div>
                 <h3>
@@ -24,7 +24,10 @@ class Article extends PureComponent {
     get body() {
         if (!this.props.isOpen) return null
         return (
-            <p>{this.props.article.text}</p>
+            <section>
+                <p>{this.props.article.text}</p>
+                <Comments comments={this.props.article.comments}/>
+            </section>
         )
     }
 }
