@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 export default CommentsWrapper =>
   class DecoratedComponent extends Component {
       state = {
-        isHidden: false
+        isHidden: true
       }
 
       toggle = () => {

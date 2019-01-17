@@ -3,14 +3,12 @@ import commentsHOC from "../decorators/commentsHOC"
 
 class Comments extends PureComponent {
     render() {
-        const {isHidden, toggle} = this.props;
-        if (!isHidden) {
-            return <button onClick={toggle}>open comments</button>
-        }
+        const {isHidden, toggle} = this.props
+        const toggleBtn = <button onClick={toggle}>{isHidden ? 'open ' : 'close '}comments</button>
 
-        return (
+        return isHidden ? toggleBtn : (
             <section>
-                <button onClick={toggle}>close comments</button>
+                {toggleBtn}
                 {this.comments}
             </section>
         )
@@ -18,10 +16,10 @@ class Comments extends PureComponent {
 
     get comments() {
         return this.props.comments.map(({id, user, text}) => (
-        <div key={id}>
-            <h4>{user}</h4>
-            <p>{text}</p>
-        </div>
+            <div key={id}>
+                <h4>{user}</h4>
+                <p>{text}</p>
+            </div>
         ))
     }
 }
