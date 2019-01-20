@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
-import ArticleList from './components/article-list';
-import UserForm from './components/user-form';
-import Filters from './components/filters';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import ArticleList from './components/articles/article-list'
+import UserForm from './components/user-form'
+import Filters from './components/filters'
+import {articleType} from './types'
 
 class App extends Component {
-
     render() {
-        const {articles} = this.props;
+        const {articles} = this.props
         return (
             <div>
                 <UserForm/>
@@ -17,4 +18,8 @@ class App extends Component {
     }
 }
 
-export default App;
+App.propTypes = {
+    articles: PropTypes.arrayOf(articleType)
+}
+
+export default App

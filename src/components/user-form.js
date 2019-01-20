@@ -14,18 +14,10 @@ class UserForm extends Component {
         )
     }
 
-    handleChange = (event) => {
+    handleChange = event => {
         event.preventDefault()
-
-        if (event.target.value.length > 10) {
-            return this.setState({
-                user: ''
-            })
-        }
-
-        this.setState({
-            user: event.target.value
-        })
+        const {value} = event.target
+        this.setState(() => ({user: value.length > 10 ? '' : value}))
     }
 }
 

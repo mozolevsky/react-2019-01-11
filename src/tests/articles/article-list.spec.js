@@ -1,15 +1,12 @@
-import React from 'react';
-import Enzyme, {render, shallow, mount} from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import ArticleList from './article-list';
-import mockedArticles from '../fixtures';
-
-Enzyme.configure({ adapter: new Adapter() });
+import React from 'react'
+import {render, mount} from 'enzyme'
+import ArticleList from '../../components/articles/article-list'
+import mockedArticles from '../../fixtures'
 
 describe('Article List', function () {
     it('should render', () => {
         const wrapper = mount(
-            <ArticleList articles = {mockedArticles} />
+            <ArticleList articles={mockedArticles} />
         )
 
         expect(wrapper.find('.test--art__container').length)
@@ -18,7 +15,7 @@ describe('Article List', function () {
 
     it('should render without open articles', () => {
         const wrapper = render(
-            <ArticleList articles = {mockedArticles} />
+            <ArticleList articles={mockedArticles} />
         )
 
         expect(wrapper.find('.test--article_body').length)
@@ -27,7 +24,7 @@ describe('Article List', function () {
 
     it('should show article text after click on button', () => {
         const wrapper = mount(
-            <ArticleList articles = {mockedArticles} />
+            <ArticleList articles={mockedArticles} />
         )
 
         wrapper.find('.test--article__btn').at(0).simulate('click');
@@ -39,7 +36,7 @@ describe('Article List', function () {
     it('should call fetch data on init', (done) => {
         const wrapper = mount(
             <ArticleList
-                articles = {mockedArticles}
+                articles={mockedArticles}
                 fetchData={() => done()}
             />
         )
