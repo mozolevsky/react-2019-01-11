@@ -21,11 +21,11 @@ class Article extends PureComponent {
         this.setState({error})
     }
     render() {
-        const {article: {title}, isOpen} = this.props
+        const {article: {title, date}, isOpen} = this.props
         return (
             <div>
                 <h3>
-                    {title}
+                    {title} - {date}
                     <button className="test--article__btn" onClick={this.toggleOpen}>
                         {isOpen ? 'close' : 'open'}
                     </button>

@@ -3,6 +3,7 @@ import Article, {TypeArticle} from '../article';
 import accordion from '../../decorators/accordion';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import {applyFiltering} from './utils'
 
 export const TypeArticles = PropTypes.arrayOf(TypeArticle)
 
@@ -19,40 +20,18 @@ class ArticleList extends Component{
         this.props.fetchData && this.props.fetchData()
     }
 
-    applyFiltering = article => {
-        /**
-         * TODO: make code refactoring
-         */
-        let isTitleFilterPassed = true
-        let isDateStartFilteringPassed = true
-        let isDateFilteringEndPassed = true
-
-        if (this.props.titleFilteringParams.length) {
-            isTitleFilterPassed = this.props.titleFilteringParams
-                .map(v => v.label)
-                .includes(article.title)
-        }
-
-        if (this.props.dateStartFilteringParam) {
-            isDateStartFilteringPassed = new Date(article.date) >= this.props.dateStartFilteringParam
-        }
-
-        if (this.props.dateEndFilteringParam) {
-            isDateStartFilteringPassed = new Date(article.date) <= this.props.dateStartFilteringParam
-        }
-        
-        return isTitleFilterPassed && isDateStartFilteringPassed && isDateFilteringEndPassed
-    }
-
     get articles() {
         const {
             openItemId,
             toggleOpenArticle,
-            articlesFromStore
+            articlesFromStore,
+            titles,
+            dateStart,
+            dateEnd
         } = this.props
 
         return articlesFromStore
-        .filter(this.applyFiltering)
+        .filter(applyFiltering(titles, dateStart, dateEnd))
         .map(article => (
             <li key={article.id} className="test--art__container">
                 <Article
@@ -67,9 +46,9 @@ class ArticleList extends Component{
 
 const mapStateToProps = store => ({
     articlesFromStore: store.articles,
-    titleFilteringParams: store.filters.titles,
-    dateStartFilteringParam: store.filters.dates && store.filters.dates.from,
-    dateEndFilteringParam: store.filters.dates && store.filters.dates.to
+    titles: store.filters.titles,
+    dateStart: store.filters.dates && store.filters.dates.from,
+    dateEnd: store.filters.dates && store.filters.dates.to
 })
 
 export default connect(
