@@ -1,0 +1,16 @@
+.commentForm {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    max-width: 400px;
+}
+
+.commentForm__field {
+    margin-bottom: 1rem;
+    resize: none;
+}
+
+.commentForm__textarea {
+    margin-bottom: 1rem;
+    min-height: 3rem
+}
