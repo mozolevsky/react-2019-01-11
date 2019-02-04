@@ -35,7 +35,7 @@ export const commentsDataForArticleSelector = createSelector(
     articlesSelector,
     idSelector,
     (articlesMap, id) => {
-        return articlesMap.filter(v => v.id === id)[0].comments
+        return articlesMap.find(v => v.id === id).comments
     }
 )
 
