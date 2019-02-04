@@ -64,7 +64,7 @@ class Article extends PureComponent {
                     transitionEnterTimeout={300}
                     transitionLeaveTimeout={300}
                 >
-                <section className="test--article_body" key={isOpen ? 0 : 1}>
+                <section className="test--article_body" key={article.id}>
                     <p>{article.text}</p>
                     {
                         this.state.error ?
