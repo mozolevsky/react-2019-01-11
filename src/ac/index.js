@@ -5,7 +5,12 @@ import {
     CHANGE_DATE_RANGE,
     RESET_DATE_RANGE,
     ADD_COMMENT,
-    LOAD_ALL_ARTICLES, LOAD_ARTICLE, START, SUCCESS, FAIL
+    LOAD_ALL_ARTICLES, 
+    LOAD_ARTICLE, 
+    START, 
+    SUCCESS, 
+    FAIL,
+    LOAD_COMMENTS_FOR_ARTICLE
 } from '../constants';
 
 export const increment = () => ({
@@ -40,9 +45,21 @@ export function addComment(comment, articleId) {
 }
 
 export function loadAllArticles() {
-    return {
-        type: LOAD_ALL_ARTICLES,
-        callAPI: '/api/article'
+    return dispatch => {
+        dispatch({
+            type: LOAD_ALL_ARTICLES + START
+        })
+
+        fetch('/api/article')
+            .then(res => res.json())
+            .then(res => dispatch({
+                type: LOAD_ALL_ARTICLES + SUCCESS,
+                response: res
+            }))
+            .catch(error => dispatch({
+                type: LOAD_ALL_ARTICLES + FAIL,
+                error
+            }))
     }
 }
 
@@ -65,5 +82,26 @@ export function loadArticle(id) {
                 error
             }))
 
+    }
+}
+
+export function loadCommentsForArticle(articleId) {
+    return dispatch => {
+        dispatch({
+            type: LOAD_COMMENTS_FOR_ARTICLE + START,
+            payload: {articleId}
+        })
+        fetch(`/api/comment?article=${articleId}`)
+            .then(res => res.json())
+            .then(res => dispatch({
+                type: LOAD_COMMENTS_FOR_ARTICLE + SUCCESS,
+                payload: {articleId},
+                response: res
+            }))
+            .catch(error => dispatch({
+                type: LOAD_COMMENTS_FOR_ARTICLE + FAIL,
+                payload: {articleId},
+                error
+            }))
     }
 }

@@ -8,8 +8,7 @@ export const articlesSelector = createSelector(
     articlesMapSelector,
     (articlesMap) => articlesMap.valueSeq().toArray()
 )
-export const commentsSelector = (store) => store.comments
-export const idSelector = (_, ownProps) => ownProps.id
+export const idSelector = (_, ownProps) => ownProps.articleId
 
 export const filteredArticlesSelector = createSelector(
     filtersSelector,
@@ -32,11 +31,14 @@ export const filteredArticlesSelector = createSelector(
     }
 )
 
-export const createCommentSelector = () => createSelector(
-    commentsSelector,
+export const commentsDataForArticleSelector = createSelector(
+    articlesSelector,
     idSelector,
-    (comments, id) => {
-        return comments.get(id)
+    (articlesMap, id) => {
+        return articlesMap.filter(v => v.id === id)[0].comments
     }
 )
 
+export const commentsForArticleSelector = createSelector(commentsDataForArticleSelector, data => data.entities)
+export const loadingCommentsSelector = createSelector(commentsDataForArticleSelector, data => data.loading)
+export const loadedCommentsSelector = createSelector(commentsDataForArticleSelector, data => data.loaded)

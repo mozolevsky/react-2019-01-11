@@ -1,6 +1,21 @@
-import {ADD_COMMENT, DELETE_ARTICLE, LOAD_ALL_ARTICLES, START, SUCCESS, FAIL, LOAD_ARTICLE} from '../constants';
+import {
+    ADD_COMMENT, 
+    DELETE_ARTICLE, 
+    LOAD_ALL_ARTICLES, 
+    START, 
+    SUCCESS, 
+    FAIL, 
+    LOAD_ARTICLE,
+    LOAD_COMMENTS_FOR_ARTICLE
+} from '../constants';
 import {arrToMap} from './utils'
 import {Record} from 'immutable';
+
+const CommentRecord = Record({
+    id: null,
+    text: null,
+    user: null
+})
 
 const ArticleRecord = Record({
     id: null,
@@ -8,7 +23,12 @@ const ArticleRecord = Record({
     title: null,
     date: null,
     loading: false,
-    comments: []
+    comments: {
+        entities: arrToMap([], CommentRecord),
+        loading: false,
+        loaded: false,
+        error: null
+    }
 })
 
 const ReducerState = Record({
@@ -27,9 +47,9 @@ export default (articles = new ReducerState(), action) => {
 
         case ADD_COMMENT:
             return articles.updateIn(
-                ['entities', payload.articleId, 'comments'],
+                ['entities', payload.articleId, 'comments', 'entities'],
                 (comments) => {
-                    return comments.concat(randomId)
+                    return [...comments, {...payload.comment, id: randomId}]
                 }
             )
 
@@ -60,6 +80,22 @@ export default (articles = new ReducerState(), action) => {
             return articles
                 .set('loading', false)
                 .set('error', error)
+        
+        case LOAD_COMMENTS_FOR_ARTICLE + START:
+            return articles
+                .setIn(['entities', payload.articleId, 'comments', 'loading'], true)
+
+        case LOAD_COMMENTS_FOR_ARTICLE + SUCCESS: 
+            return articles
+                .setIn(['entities', payload.articleId, 'comments'], {})
+                .setIn(['entities', payload.articleId, 'comments', 'loading'], false)
+                .setIn(['entities', payload.articleId, 'comments', 'loaded'], true)
+                .setIn(['entities', payload.articleId, 'comments', 'entities'], response)
+
+        case LOAD_COMMENTS_FOR_ARTICLE + FAIL:
+            return articles
+                .setIn(['entities', payload.articleId, 'comments', 'loading'], false)
+                .setIn(['entities', payload.articleId, 'comments', 'error'], error)
 
         default:
             return articles

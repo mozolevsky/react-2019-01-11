@@ -47,7 +47,6 @@ class ArticleList extends Component{
 
 export default connect(
     store => {
-        console.log('article-list connect');
         return {
             articlesFromStore: filteredArticlesSelector(store),
             loading: loadingSelector(store),

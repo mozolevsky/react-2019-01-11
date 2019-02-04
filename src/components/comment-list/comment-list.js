@@ -5,13 +5,25 @@ import PropTypes from 'prop-types';
 import CSSTransition from 'react-addons-css-transition-group'
 import './comment-list.css';
 import CommentForm from '../comment-form';
+import {connect} from 'react-redux';
+import {loadCommentsForArticle} from '../../ac'
+import {
+    commentsForArticleSelector,
+    loadingCommentsSelector,
+    loadedCommentsSelector
+} from '../../selectors'
+import Loader from '../common/loader'
 
-export const TypeComments = PropTypes.arrayOf(PropTypes.string)
+
+export const TypeComments = PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.string),
+    PropTypes.object
+])
 
 class CommentList extends Component {
     static propTypes = {
-        article: PropTypes.object,
-
+        comments: TypeComments,
+        articleId: PropTypes.string,
         // from decorator
         isOpen: PropTypes.bool,
         toggleOpenItem: PropTypes.func.isRequired
@@ -21,8 +33,16 @@ class CommentList extends Component {
         comments: []
     }
 
+    componentDidUpdate() {
+        const {isOpen, fetchData, articleId, loading, loaded} = this.props
+
+        if(isOpen && !loading && !loaded) {
+            fetchData && fetchData(articleId)
+        }
+    }
+
     render() {
-        const { isOpen, toggleOpenItem } = this.props
+        const {isOpen, toggleOpenItem} = this.props
         return (
             <div>
                 <button onClick={toggleOpenItem} className="test--comment-list__btn">
@@ -42,31 +62,45 @@ class CommentList extends Component {
 
     get body() {
         const {
-            article: {
-                comments = [],
-                id: articleId
-            },
-            isOpen
+            articleId,
+            isOpen,
+            comments,
+            loading
         } = this.props
 
         if (!isOpen) return null;
 
-        const body = comments.length ? (
-            <ul>
-                {comments.map((id) => (
-                    <li key={id} className="test--comment-list__item">
-                        <Comment id={id} />
-                    </li>
-                ))}
-            </ul>
-        ) : (
-            <h3 className="test--comment-list__empty">No comments yet</h3>
-        )
+        const body = loading ? 
+            <Loader /> : comments.length ? (
+                        <ul>
+                            {comments.map(comment => (
+                                <li key={comment.id} className="test--comment-list__item">
+                                    <Comment comment={comment} />
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <h3 className="test--comment-list__empty">No comments yet</h3>
+                    )
+
         return <div>
-            <CommentForm articleId={articleId} />
-            {body}
-        </div>
+                <CommentForm articleId={articleId} />
+                {body}
+            </div>
     }
 }
 
-export default toggleOpen(CommentList)
+const mapStateToProps = (state, ownProps) => ({
+    comments: commentsForArticleSelector(state, ownProps),
+    loading: loadingCommentsSelector(state, ownProps),
+    loaded: loadedCommentsSelector(state, ownProps)
+})
+
+const mapDispathToProps = dispath => ({
+    fetchData: articleId => dispath(loadCommentsForArticle(articleId))
+})
+
+export default connect(
+    mapStateToProps,
+    mapDispathToProps
+)(toggleOpen(CommentList))

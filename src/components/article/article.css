@@ -15,3 +15,12 @@
     opacity: 0.01;
     transition: opacity 300ms ease-in;
 }
+
+.article-appear {
+    opacity: 0.01;
+  }
+  
+  .article-appear.article-appear-active {
+    opacity: 1;
+    transition: opacity 300ms ease-in;
+  }
