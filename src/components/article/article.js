@@ -55,23 +55,18 @@ class Article extends PureComponent {
     get body() {
         const {article, isOpen} = this.props
 
-        if (!isOpen) return null
         return (
             <CSSTransition
                     transitionName="article"
                     transitionAppear={true}
                     transitionAppearTimeout={300}
                     transitionEnterTimeout={300}
-                    transitionLeaveTimeout={300}
-                >
-                <section className="test--article_body" key={article.id}>
-                    <p>{article.text}</p>
-                    {
-                        this.state.error ?
-                            null :
-                            <CommentList articleId={article.id} />
-                    }
-                </section>
+                    transitionLeaveTimeout={300}>
+                    {isOpen &&
+                        (<section className="test--article_body" key={article.id}>
+                            <p>{article.text}</p>
+                            {!this.state.error && <CommentList articleId={article.id} />}
+                        </section>)}
             </CSSTransition>
         )
     }
