@@ -5,7 +5,13 @@ import {
     CHANGE_DATE_RANGE,
     RESET_DATE_RANGE,
     ADD_COMMENT,
-    LOAD_ALL_ARTICLES, LOAD_ARTICLE, START, SUCCESS, FAIL, LOAD_ARTICLE_COMMENTS
+    LOAD_COMMENTS,
+    LOAD_ALL_ARTICLES,
+    LOAD_ARTICLE,
+    START,
+    SUCCESS,
+    FAIL,
+    LOAD_ARTICLE_COMMENTS
 } from '../constants';
 
 export const increment = () => ({
@@ -73,5 +79,26 @@ export function loadArticle(id) {
                 error
             }))
 
+    }
+}
+
+export function loadComments(currentPage, limit) {
+    return dispatch => {
+        dispatch({
+            type: LOAD_COMMENTS + START,
+            payload: {currentPage}
+        })
+        fetch(`/api/comment?limit=${limit}&offset=${limit * (currentPage - 1)}`)
+            .then(res => res.json())
+            .then(response => dispatch({
+                type: LOAD_COMMENTS + SUCCESS,
+                payload: {currentPage},
+                response
+            }))
+            .catch(error => dispatch({
+                type: LOAD_COMMENTS + FAIL,
+                payload: {currentPage},
+                error
+            }))
     }
 }

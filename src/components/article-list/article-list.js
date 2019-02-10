@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {filteredArticlesSelector, loadedSelector, loadingSelector} from '../../selectors';
 import {loadAllArticles} from '../../ac';
-import Loader from '../common/loader';
+import {Loader} from '../UI';
 import {NavLink} from 'react-router-dom';
 
 export const TypeArticles = PropTypes.array

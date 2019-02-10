@@ -1,1 +1,1 @@
-export {default, TypeArticle} from './article'
+export {default, TypeArticle} from './article';

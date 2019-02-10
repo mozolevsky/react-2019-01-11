@@ -1,11 +1,11 @@
 import React, {PureComponent} from 'react'
-import CommentList, {TypeComments} from '../comment-list/comment-list';
+import CommentList, {TypeComments} from './comments/comment-list';
 import PropTypes from 'prop-types';
 import CSSTransition from 'react-addons-css-transition-group'
 import './article.css';
 import {connect} from 'react-redux';
 import {deleteArticle, loadArticle} from '../../ac';
-import Loader from '../common/loader';
+import {Loader} from '../UI';
 import {articleSelector} from '../../selectors'
 
 export const TypeArticle = PropTypes.shape({

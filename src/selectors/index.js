@@ -17,9 +17,6 @@ export const filteredArticlesSelector = createSelector(
     articlesSelector,
     (filters, articles) => {
         const {selected, dateRange: {from, to}} = filters
-
-        console.log('filteredArticlesSelector');
-
         return articles.filter(article => {
             const publishedDate = Date.parse(article.date)
             return (
@@ -39,5 +36,23 @@ export const createCommentSelector = () => createSelector(
     (comments, id) => {
         return comments.get(id)
     }
+)
+
+export const pageWithCommentsSelector = (store, ownProps) => store.allComments.pages.get(ownProps.pageNumber)
+
+export const pageCommentsSelector = () => createSelector(
+    pageWithCommentsSelector,
+    page => page && page.comments
+)
+
+export const pageCommentsLoadingSelector = () => createSelector(
+    pageWithCommentsSelector,
+    page => page && page.loading
+)
+
+
+export const pageCommentsLoadedSelector = () => createSelector(
+    pageWithCommentsSelector,
+    page => page && page.loaded
 )
 

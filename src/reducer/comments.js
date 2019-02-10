@@ -23,7 +23,6 @@ export default (state = new ReducerRecord(), action) => {
             )
         case LOAD_ARTICLE_COMMENTS + SUCCESS:
             return state.mergeIn(['entities'], arrToMap(response, CommentRecord))
-
         default:
             return state
     }

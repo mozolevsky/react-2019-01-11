@@ -1,22 +1,17 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {createCommentSelector} from '../../selectors';
+import {createCommentSelector} from '../../../selectors';
+import {Comment} from '../../UI'
 
 export const TypeComment = PropTypes.shape({
     user: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired
 })
 
-class Comment extends Component {
+class ArticleComment extends Component {
     render() {
-        const { user, text } = this.props.comment
-        return (
-            <div>
-                <h4>{user}</h4>
-                <p>{text}</p>
-            </div>
-        )
+        return <Comment {...this.props} />
     }
 }
 
@@ -28,7 +23,6 @@ Comment.propTypes = {
 const initMapStateToProps = () => {
     const commentSelector = createCommentSelector()
     return (store, ownProps) => {
-
         return {
             comment: commentSelector(store, ownProps)
         }
@@ -37,4 +31,4 @@ const initMapStateToProps = () => {
 
 export default connect(
     initMapStateToProps
-)(Comment)
+)(ArticleComment)

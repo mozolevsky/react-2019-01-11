@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
-import Comment from '../comment/comment'
-import toggleOpen from '../../decorators/toggleOpen'
+import toggleOpen from '../../../decorators/toggleOpen'
+import ArticleComment from './comment'
 import PropTypes from 'prop-types';
 import CSSTransition from 'react-addons-css-transition-group'
 import './comment-list.css';
-import CommentForm from '../comment-form';
+import CommentForm from '../../comment-form';
 import {connect} from 'react-redux'
-import Loader from '../common/loader';
-import {loadArticleComments} from '../../ac';
+import {loadArticleComments} from '../../../ac';
+import {List, Loader} from '../../UI'
 
 export const TypeComments = PropTypes.arrayOf(PropTypes.string)
 
@@ -71,13 +71,12 @@ class CommentList extends Component {
         if (!commentsLoaded) return null
 
         const body = comments.length ? (
-            <ul>
-                {comments.map((id) => (
-                    <li key={id} className="test--comment-list__item">
-                        <Comment id={id} />
-                    </li>
-                ))}
-            </ul>
+            <List 
+                data={comments}
+                pathToKey={entity => entity}
+                listItemCssClass={'test--comment-list__item'}
+                getComponent={entity => <ArticleComment id={entity}/>}
+            />
         ) : (
             <h3 className="test--comment-list__empty">No comments yet</h3>
         )
