@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 import {deleteArticle, loadArticle} from '../../ac';
 import Loader from '../common/loader';
 import {articleSelector} from '../../selectors'
+import i18n from '../i18n';
 
 export const TypeArticle = PropTypes.shape({
     id: PropTypes.string,
@@ -31,13 +32,13 @@ class Article extends PureComponent {
         }
     }
     render() {
-        const {article} = this.props
+        const {article, t} = this.props
         if (!article) return null
         return (
             <div>
                 <h3>
                     {article.title}
-                    <button onClick={this.handleDelete}>Delete</button>
+                    <button onClick={this.handleDelete}>{t('delete me')}</button>
                 </h3>
                 <CSSTransition
                     transitionName="article"
@@ -81,4 +82,4 @@ export default connect(
         dispatchDeleteArticle: (id) => dispatch(deleteArticle(id)),
         loadArticle: (id) => dispatch(loadArticle(id))
     })
-)(Article)
+)(i18n(Article))

@@ -15,7 +15,7 @@ import {
     COMMENTS_PER_PAGE
 } from '../constants';
 
-import {push, replace} from 'connected-react-router';
+import {replace} from 'connected-react-router';
 
 export const increment = () => ({
     type: INCREMENT

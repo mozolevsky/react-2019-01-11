@@ -1,9 +1,10 @@
 import React from 'react'
+import i18n from '../i18n'
 
-function Loader() {
+function Loader({t}) {
     return (
-        <h3>Loading...</h3>
+        <h3>{t('Loading') + '...'}</h3>
     )
 }
 
-export default Loader
+export default i18n(Loader)
