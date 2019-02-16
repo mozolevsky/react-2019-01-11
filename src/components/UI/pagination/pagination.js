@@ -12,11 +12,14 @@ export const pagination = props => {
         listItemCss
     } = props
     let amountOfPages = Math.ceil(total / limit)
-    const paginationData = []
-    while (amountOfPages > 0) {
-        paginationData.push(amountOfPages)
-        amountOfPages--
-    }
+    // const paginationData = []
+    // while (amountOfPages > 0) {
+    //     paginationData.push(amountOfPages)
+    //     amountOfPages--
+    // }
+
+    const paginationData = [...new Array(amountOfPages)].map((_, i) => i).filter(v => v > 0)
+    console.log(paginationData)
 
     return (
         paginationData.length > 0 && 
