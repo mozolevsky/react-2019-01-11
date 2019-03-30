@@ -9,7 +9,7 @@ import {Route, Switch, Redirect} from 'react-router-dom';
 import Menu from './components/menu';
 import MenuItem from './components/menu-item';
 import {Provider as AuthProvider} from './contexts/auth';
-import LangProvider from './components/i18n/lang-provider'
+import {LangProvider} from './components/i18n'
 
 class App extends Component {
     state = {
